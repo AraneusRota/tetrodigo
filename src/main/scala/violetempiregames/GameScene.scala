@@ -1,17 +1,20 @@
 package violetempiregames
 
-import indigo._
-import indigo.scenes._
+import indigo.*
+import indigo.scenes.*
+import violetempiregames.init.Assets
+import violetempiregames.model.Model
+import violetempiregames.view.BlockView
 
-object GameScene extends Scene[Unit, Unit, Unit]:
-
-  type SceneModel     = Unit
+object GameScene extends Scene[Unit, Model, Unit]:
+  
+  type SceneModel     = Model
   type SceneViewModel = Unit
 
   val name: SceneName =
     SceneName("game")
 
-  val modelLens: Lens[Unit, Unit] =
+  val modelLens: Lens[Model, Model] =
     Lens.keepLatest
 
   val viewModelLens: Lens[Unit, Unit] =
@@ -25,31 +28,24 @@ object GameScene extends Scene[Unit, Unit, Unit]:
 
   def updateModel(
       context: FrameContext[Unit],
-      model: Unit
-  ): GlobalEvent => Outcome[Unit] =
-    _ => Outcome(model)
+      model: Model
+  ): GlobalEvent => Outcome[Model] =
+    event => Outcome(model.update(context, event))
 
   def updateViewModel(
       context: FrameContext[Unit],
-      model: Unit,
+      model: Model,
       viewModel: Unit
   ): GlobalEvent => Outcome[Unit] =
     _ => Outcome(viewModel)
 
   def present(
       context: FrameContext[Unit],
-      model: Unit,
+      model: Model,
       viewModel: Unit
   ): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment(
-        Shape
-          .Box(
-            Rectangle(0, 0, 60, 60),
-            Fill.LinearGradient(Point(0), RGBA.Magenta, Point(45), RGBA.Cyan)
-          )
-          .withRef(30, 30)
-          .moveTo(100, 100)
-          .rotateTo(Radians.fromSeconds(context.running * 0.25))
+        BlockView(model.blocks)
       )
     )

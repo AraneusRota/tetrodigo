@@ -26,11 +26,11 @@ lazy val mygame =
       semanticdbVersion  := scalafixSemanticdb.revision,
     )
     .settings( // Indigo specific settings
-      showCursor            := false,
+      showCursor            := true,
       title                 := "Tetrodigo",
       gameAssetsDirectory   := "assets",
-      windowStartWidth      := 550,
-      windowStartHeight     := 400,
+      windowStartWidth      := 400,
+      windowStartHeight     := 800,
       disableFrameRateLimit := false,
       electronInstall       := indigoplugin.ElectronInstall.Global,
       libraryDependencies ++= Seq(
